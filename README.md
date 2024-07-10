@@ -64,7 +64,7 @@ Each role (Warrior, Mage, and Tank) will have 4 armor/weapon sets per chapter.
 
 ### Spells
 
-Each role (Warrior, Mage, and Tank) will have 2 Advanced spells per chapter. Eventually there will introduce Legendary spells.
+Each role (Warrior, Mage, and Tank) will have 2 Advanced spells per chapter. Eventually we will introduce Legendary spells.
 
 -   Eventually will introduce Legendary spells.
 
