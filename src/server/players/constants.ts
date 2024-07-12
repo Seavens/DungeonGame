@@ -1,6 +1,6 @@
 import { Data } from "./types";
 
-export const DATA_TEMPLATE: Data = {
+export const DEFAULT_DATA: Data = {
 	profile: {
 		coins: 1000,
 		gems: 100,

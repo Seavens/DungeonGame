@@ -78,7 +78,8 @@ Each role (Warrior, Mage, and Tank) will have 2 Advanced spells per chapter. Eve
 
 ## Datastore
 
--   This game is currently using [Profile Service](https://www.npmjs.com/package/@rbxts/profileservice).
+-   This game is currently using [Lapis](https://github.com/nezuo/lapis).
+-   State is managed with [Reflex](https://littensy.github.io/reflex/)
 
 ### Data Structure
 

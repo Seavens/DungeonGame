@@ -1,75 +1,65 @@
-import { Service, OnStart } from "@flamework/core";
-import ProfileService from "@rbxts/profileservice";
-import { Players } from "@rbxts/services";
-import { DATA_TEMPLATE } from "./constants";
-import { Profile } from "@rbxts/profileservice/globals";
-import { IS_STUDIO, STORE_KEY, STORE_NAME } from "shared/core/constants";
+import { OnStart, Service } from "@flamework/core";
+import { DEFAULT_DATA } from "./constants";
+import { COLLECTION_KEY, IS_STUDIO } from "shared/core/constants";
+import { createCollection, Document } from "@rbxts/lapis";
 import { Data } from "./types";
-
-export interface OnPlayerAdded {
-	/** @hideinherited */
-	onPlayerAdded(player: Player): void;
-}
-
-export interface OnPlayerRemoved {
-	/** @hideinherited */
-	onPlayerRemoved(player: Player): void;
-}
+import { Players } from "@rbxts/services";
+import { reuseThread } from "shared/utility/functions/reuse-thread";
+import { attemptDataWipe } from "./utility";
 
 @Service({})
-export class PlayerService implements OnStart, OnPlayerAdded, OnPlayerRemoved {
-	private profiles: { [key: number]: Option<Profile<Data>> } = {};
-	private store;
+export class PlayerService implements OnStart {
+	private readonly collection = createCollection(COLLECTION_KEY, {
+		defaultData: DEFAULT_DATA,
+	});
 
-	constructor() {
-		this.store = IS_STUDIO
-			? ProfileService.GetProfileStore(STORE_NAME, DATA_TEMPLATE).Mock
-			: ProfileService.GetProfileStore(STORE_NAME, DATA_TEMPLATE);
-	}
+	private readonly documents = new Map<number, Document<Data, boolean>>();
 
-	onStart() {
-		Players.PlayerAdded.Connect((player) => this.onPlayerAdded(player));
-		Players.PlayerRemoving.Connect((player) => this.onPlayerRemoved(player));
+	onStart(): void {
+		Players.PlayerAdded.Connect((player: Player): Promise<void> => this.onPlayerAdded(player));
+		Players.PlayerRemoving.Connect((player: Player): Promise<void> => this.onPlayerRemoved(player));
 		const players = Players.GetPlayers();
 		for (const player of players) {
-			task.spawn(() => this.onPlayerAdded(player));
+			this.onPlayerAdded(player);
 		}
 	}
 
-	public onPlayerAdded(player: Player): void {
-		if (this.profiles[player.UserId]) {
-			warn(`Profile for player ${player.Name} is already loaded.`);
-			return;
+	private async onPlayerAdded(player: Player): Promise<void> {
+		if (IS_STUDIO) {
+			await attemptDataWipe(player);
 		}
 
-		const index = this.getStoreIndex(player);
+		const userId = player.UserId;
+		const index = `${COLLECTION_KEY}${userId}`;
 
-		const profile = this.store.LoadProfileAsync(index);
+		this.loadDocument(index)
+			.then((document) => {
+				if (player.Parent === undefined) {
+					document.close().catch(warn);
+					return;
+				}
 
-		if (profile) {
-			profile.AddUserId(player.UserId);
-			profile.Reconcile();
-			profile.ListenToRelease(() => {
-				this.profiles[player.UserId] = undefined;
-				player.Kick();
+				this.documents.set(userId, document);
+			})
+			.catch((err) => {
+				warn(err);
+				player.Kick("Failed to load player data");
 			});
-			this.profiles[player.UserId] = profile;
-			warn(`Loaded profile for player ${player.Name} on ${index}!`);
-		}
 	}
 
-	public onPlayerRemoved(player: Player): void {
-		const index = this.getStoreIndex(player);
-		const profile = this.profiles[player.UserId];
+	private async onPlayerRemoved(player: Player): Promise<void> {
+		const userId = player.UserId;
+		const document = this.documents.get(userId);
 
-		if (profile) {
-			profile.Release();
-			this.profiles[player.UserId] = undefined;
-			warn(`Released profile for ${player.Name} on ${index}!`);
-		}
+		await document
+			?.close()
+			.catch(warn)
+			.finally((): void => {
+				this.documents.delete(userId);
+			});
 	}
 
-	private getStoreIndex(player: Player): string {
-		return IS_STUDIO ? `${STORE_NAME}${player.UserId}` : `${STORE_KEY}${player.UserId}`;
+	private async loadDocument(index: string): Promise<Document<Data, boolean>> {
+		return this.collection.load(index);
 	}
 }
