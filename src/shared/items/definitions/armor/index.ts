@@ -1,15 +1,32 @@
 import { ItemId } from "shared/items/types";
-import { advancedPhysicalArmor, basicPhysicalArmor, expertPhysicalArmor, masterPhysicalArmor } from "./body/physical";
-import { advancedMagicArmor, basicMagicArmor, expertMagicArmor, masterMagicArmor } from "./body/magic";
-import { basicTankArmor, advancedTankArmor, expertTankArmor, masterTankArmor } from "./body/tank";
-import { advancedMagicHelmet, basicMagicHelmet, expertMagicHelmet, masterMagicHelmet } from "./head/magic";
 import {
-	advancedPhysicalHelmet,
+	basicPhysicalArmor,
+	advancedPhysicalArmor,
+	expertPhysicalArmor,
+	masterPhysicalArmor,
+	basicMagicArmor,
+	advancedMagicArmor,
+	expertMagicArmor,
+	masterMagicArmor,
+	basicTankArmor,
+	advancedTankArmor,
+	expertTankArmor,
+	masterTankArmor,
+} from "./body";
+import {
 	basicPhysicalHelmet,
+	advancedPhysicalHelmet,
 	expertPhysicalHelmet,
 	masterPhysicalHelmet,
-} from "./head/physical";
-import { advancedTankHelmet, basicTankHelmet, expertTankHelmet, masterTankHelmet } from "./head/tank";
+	basicMagicHelmet,
+	advancedMagicHelmet,
+	expertMagicHelmet,
+	masterMagicHelmet,
+	basicTankHelmet,
+	advancedTankHelmet,
+	expertTankHelmet,
+	masterTankHelmet,
+} from "./head";
 
 export const armors = {
 	// == Armor ==

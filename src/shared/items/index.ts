@@ -53,4 +53,5 @@ export const itemDefinitions = {
 	...armors,
 	...spells,
 } as const;
+
 itemDefinitions satisfies { [I in ItemId]: ItemDefinition<I, InferClass<(typeof itemDefinitions)[I]>> };
