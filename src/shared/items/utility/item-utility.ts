@@ -4,7 +4,7 @@ import { ArmorUtility } from "./armor-utility";
 import { WeaponUtility } from "./weapon-utility";
 import { SpellUtility } from "./spell-utility";
 import { generateUUID } from "shared/utility/functions/create-uuid";
-import { itemDefinitions } from "..";
+import { itemDefinitions } from "../definitions";
 import Object from "@rbxts/object-utils";
 
 export class ItemUtility {

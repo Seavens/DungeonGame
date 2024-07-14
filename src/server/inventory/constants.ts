@@ -1,0 +1,1 @@
+export const INVENTORY_ITEMS_MAXIMUM = 8 * 25;

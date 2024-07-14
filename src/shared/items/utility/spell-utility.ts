@@ -1,6 +1,6 @@
-import { itemDefinitions } from "shared/items";
 import { ItemUnique, ItemKind, ItemIdOfKind } from "shared/items/types";
 import { RarityUtility } from "./rarity-utility";
+import { itemDefinitions } from "../definitions";
 
 export class SpellUtility {
 	public static generateUnique(id: ItemIdOfKind<ItemKind.Spell>, owner: number) {

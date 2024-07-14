@@ -1,4 +1,4 @@
-import { itemDefinitions } from "..";
+import { itemDefinitions } from "../definitions";
 import { ItemIdOfKind, ItemKind, ItemUnique } from "../types";
 import { RarityUtility } from "./rarity-utility";
 

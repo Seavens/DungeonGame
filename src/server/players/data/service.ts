@@ -37,20 +37,20 @@ export class DataService implements OnPlayerAdded, OnPlayerRemoving {
 		const user = player.Name;
 		const id = player.UserId;
 		const index = `${COLLECTION_KEY}${id}`;
-		// try {
-		// 	const document = await collection.load(index, [id]);
-		// 	const data = document.read();
-		// 	const unsubscribe = store.subscribe(selectDataByUser(user), (data: Data): void => {
-		// 		document.write(data);
-		// 	});
-		// 	subscriptions.set(player, unsubscribe);
-		// 	store.addData({ data }, { user, replicate: true });
-		// 	documents.set(player, document);
-		// } catch (err) {
-		// 	warn(`${user} encountered an error while loading data! Error:`, err);
-		// 	const data = DATA_TEMPLATE;
-		// 	store.addData({ data }, { user, replicate: true });
-		// }
+		try {
+			const document = await collection.load(index, [id]);
+			const data = document.read();
+			// const unsubscribe = store.subscribe(selectDataByUser(user), (data: Data): void => {
+			// 	document.write(data);
+			// });
+			// 	subscriptions.set(player, unsubscribe);
+			// 	store.addData({ data }, { user, replicate: true });
+			// 	documents.set(player, document);
+		} catch (err) {
+			warn(`${user} encountered an error while loading data! Error:`, err);
+			const data = DEFAULT_DATA;
+			// 	store.addData({ data }, { user, replicate: true });
+		}
 		loaded.add(player);
 		dataLoaded.fire(player);
 		// Events.data.loaded(player);

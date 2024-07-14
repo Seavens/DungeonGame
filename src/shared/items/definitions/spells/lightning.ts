@@ -1,5 +1,5 @@
-import { ItemDefinition } from "shared/items";
 import { ItemId, ItemKind, ItemTier } from "shared/items/types";
+import { ItemDefinition } from "..";
 
 export const lightning: ItemDefinition<ItemId.Lightning, ItemKind.Spell> = {
 	id: ItemId.Lightning,

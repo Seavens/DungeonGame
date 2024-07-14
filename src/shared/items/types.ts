@@ -1,6 +1,6 @@
 import { Flamework } from "@flamework/core";
 import { t } from "@rbxts/t";
-import type { ItemDefinition, itemDefinitions } from ".";
+import type { ItemDefinition, itemDefinitions } from "./definitions";
 import { isUUID } from "shared/utility/guards";
 
 export const enum ItemRarity {

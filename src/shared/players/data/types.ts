@@ -1,6 +1,7 @@
 import { t } from "@rbxts/t";
 import { EquippedInventory, isEquippedInventory } from "shared/inventory";
 import { isItem, Item } from "shared/items/types";
+import { isSlot } from "shared/utility";
 
 export interface DailiesData {
 	lastCollected: number;
@@ -10,7 +11,7 @@ export interface DailiesData {
 
 export interface InventoryData {
 	equipped: EquippedInventory;
-	stored: Array<Item>;
+	stored: Map<Slot, Item>;
 }
 
 export interface ProfileData {
@@ -32,7 +33,7 @@ export const isDailiesData: t.check<DailiesData> = t.strictInterface({
 
 export const isInventoryData: t.check<InventoryData> = t.strictInterface({
 	equipped: isEquippedInventory,
-	stored: t.array(isItem),
+	stored: t.map(isSlot, isItem),
 });
 
 export const isProfileData: t.check<ProfileData> = t.strictInterface({

@@ -1,5 +1,5 @@
-import { ItemDefinition } from "shared/items";
 import { ItemId, ItemKind, ItemTier } from "shared/items/types";
+import { ItemDefinition } from "../..";
 
 export const basicPhysicalHelmet: ItemDefinition<ItemId.BasicPhysicalHelmet, ItemKind.Armor> = {
 	id: ItemId.BasicPhysicalHelmet,

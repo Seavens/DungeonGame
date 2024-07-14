@@ -1,5 +1,5 @@
-import { ItemDefinition } from "shared/items";
 import { ItemId, ItemKind, ItemTier } from "shared/items/types";
+import { ItemDefinition } from "..";
 
 export const basicWand: ItemDefinition<ItemId.BasicWand, ItemKind.Weapon> = {
 	id: ItemId.BasicWand,

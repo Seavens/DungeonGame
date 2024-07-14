@@ -17,6 +17,6 @@ export const DEFAULT_DATA: Data = {
 			weapon: undefined,
 			spells: [undefined, undefined],
 		},
-		stored: [],
+		stored: new Map(),
 	},
 };
