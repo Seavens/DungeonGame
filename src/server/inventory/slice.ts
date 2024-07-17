@@ -3,7 +3,7 @@ import type { Draft } from "@rbxts/immut/src/types-external";
 import { createProducer } from "@rbxts/reflex";
 import { InventoryActions, InventoryAddItems, InventoryRemoveItems } from "shared/inventory";
 import type { UserMetadata } from "shared/state/replication";
-import { InventoryImplement } from "./implement";
+import { InventoryImplement } from "../../shared/inventory/implement";
 import { DataAdded, DEFAULT_DATA, InventoryData } from "shared/players/data";
 
 export interface InventoryState {

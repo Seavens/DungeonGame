@@ -2,10 +2,10 @@ import type { InferActions, InferState } from "@rbxts/reflex";
 import { combineProducers } from "@rbxts/reflex";
 import type { SharedSlices } from "shared/state/slices";
 import { sharedSlices } from "shared/state/slices";
-import { broadcastMiddleware } from "./replication";
 import type { ServerSlices } from "./slices";
 import { serverSlices } from "./slices";
 import { DataState } from "server/players";
+import { broadcastMiddleware } from "./replication";
 
 export type ServerStore = typeof store;
 export type ServerState = InferState<ServerStore>;

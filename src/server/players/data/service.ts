@@ -6,13 +6,22 @@ import { createListener } from "shared/utility";
 import { OnPlayerAdded, OnPlayerRemoving } from "../service";
 import { COLLECTION_NAME, COLLECTION_KEY } from "./constants";
 import { attemptDataWipe } from "./utility";
+import { store } from "server/state/store";
+import { Events } from "server/network";
+import { selectDataByUser } from "./selectors";
 
 export interface OnDataLoaded {
 	/** @hideinherited */
 	onDataLoaded(player: Player): void;
 }
 
+export interface OnPlayerReady {
+	/** @hideinherited */
+	onPlayerReady(player: Player): void;
+}
+
 const dataLoaded = createListener<OnDataLoaded>();
+const onPlayerReady = createListener<OnPlayerReady>();
 
 @Service({})
 export class DataService implements OnPlayerAdded, OnPlayerRemoving {
@@ -40,20 +49,22 @@ export class DataService implements OnPlayerAdded, OnPlayerRemoving {
 		try {
 			const document = await collection.load(index, [id]);
 			const data = document.read();
-			// const unsubscribe = store.subscribe(selectDataByUser(user), (data: Data): void => {
-			// 	document.write(data);
-			// });
-			// 	subscriptions.set(player, unsubscribe);
-			// 	store.addData({ data }, { user, replicate: true });
-			// 	documents.set(player, document);
+			const unsubscribe = store.subscribe(selectDataByUser(user), (data: Data): void => {
+				document.write(data);
+			});
+			subscriptions.set(player, unsubscribe);
+			store.addData({ data }, { user, replicate: true });
+			onPlayerReady.fire(player);
+
+			documents.set(player, document);
 		} catch (err) {
 			warn(`${user} encountered an error while loading data! Error:`, err);
 			const data = DEFAULT_DATA;
-			// 	store.addData({ data }, { user, replicate: true });
+			store.addData({ data }, { user, replicate: true });
 		}
 		loaded.add(player);
 		dataLoaded.fire(player);
-		// Events.data.loaded(player);
+		Events.data.loaded(player);
 	}
 
 	public async onPlayerRemoving(player: Player): Promise<void> {
@@ -61,7 +72,7 @@ export class DataService implements OnPlayerAdded, OnPlayerRemoving {
 		const unsubscribe = subscriptions.get(player);
 		const document = documents.get(player);
 		const user = player.Name;
-		// store.removeData({}, { user, replicate: true });
+		store.removeData({}, { user, replicate: true });
 		unsubscribe?.();
 		await document
 			?.close()

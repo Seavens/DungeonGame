@@ -1,5 +1,6 @@
 import { OnStart, Service } from "@flamework/core";
 import { Players } from "@rbxts/services";
+import { Events } from "server/network";
 import { createListener, reuseThread } from "shared/utility";
 
 export interface OnPlayerAdded {

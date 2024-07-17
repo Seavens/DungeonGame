@@ -12,11 +12,11 @@ export class TestService implements OnPlayerAdded {
 		const user = player.Name;
 		const items: Array<Item> = [];
 
-		for (let i = 0; i < 10; i++) {
+		for (const i of $range(1, 10)) {
 			const item = ItemUtility.generateItem(1);
 			items.push(item);
 		}
-		store.addItems({ items }, { user: user, replicate: false });
+		warn(store.addItems({ items }, { user: user, replicate: false }));
 		warn(store.getState().data.inventory);
 	}
 }

@@ -38,25 +38,31 @@ export class InventoryImplement {
 	}
 
 	public static addItems({ stored }: InventoryData, adding: Array<Item>): boolean {
+		warn("Adding items to inventory...");
 		if (!isDraft(stored)) {
+			warn("Inventory is not a draft!");
 			return false;
 		}
 		let size = stored.size();
 		// eslint-disable-next-line roblox-ts/no-any
 		if (size > INVENTORY_ITEMS_MAXIMUM) {
 			// Not sure why it needs eslint disable // FIXME
+			warn("Inventory is full!");
 			return false;
 		}
 		for (const item of adding) {
 			const empty = this.getEmptySlot(stored, INVENTORY_ITEMS_MAXIMUM);
 			if (empty === undefined) {
+				warn("No empty slots!");
 				return false;
 			}
 			// eslint-disable-next-line roblox-ts/no-any
 			stored.set(empty, item); // Not sure why it needs eslint disable // FIXME
 			size += 1;
+			warn(`Added item to slot ${empty}`);
 		}
 		if (size > INVENTORY_ITEMS_MAXIMUM) {
+			warn("Inventory is full!");
 			return false;
 		}
 		return true;

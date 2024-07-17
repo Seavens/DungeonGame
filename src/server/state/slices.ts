@@ -1,4 +1,4 @@
-import { dataSlice } from "server/players";
+import { dataSlice } from "server/players/data/slice";
 
 export type ServerSlices = typeof serverSlices;
 
